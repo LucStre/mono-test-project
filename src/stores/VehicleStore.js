@@ -22,7 +22,9 @@ class VehicleStore {
         MakeId: paramsData.MakeId,
       };
       const filteredParams = Object.fromEntries(
-        Object.entries(params).filter(([key, value]) => value !== undefined)
+        Object.entries(params).filter(
+          ([key, value]) => value !== undefined && value !== ""
+        )
       );
       const urlParams = new URLSearchParams(Object.entries(filteredParams));
       const data = await this.vehicleService.getVehicles(urlParams);
