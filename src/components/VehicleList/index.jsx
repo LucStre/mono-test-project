@@ -19,6 +19,8 @@ export function VehicleList() {
     Id: "",
     Name: "",
     Abrv: "",
+    sortBy: "",
+    orderBy: "",
   });
 
   useEffect(() => {
@@ -34,31 +36,47 @@ export function VehicleList() {
     });
   };
 
+  const handleSort = (event) => {
+    setState({
+      ...state,
+      sortBy: event.target.textContent,
+      orderBy: state.orderBy == "asc" ? "desc" : "asc",
+    });
+  };
+
   return (
     <TableContainer mt={"20px"}>
       <Table variant="simple" size="lg">
         <Thead>
           <Tr>
-            {Object.keys(state).map((key) => {
-              return <Th key={key}>{key}</Th>;
-            })}
+            {Object.keys(state)
+              .slice(0, 3)
+              .map((key) => {
+                return (
+                  <Th key={key} cursor={"pointer"} onClick={handleSort}>
+                    {key}
+                  </Th>
+                );
+              })}
             <Th></Th>
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
-            {Object.keys(state).map((key) => {
-              return (
-                <Td key={key} p={"10px"}>
-                  <Input
-                    name={key}
-                    value={state[key]}
-                    onChange={handleChange}
-                    size={"sm"}
-                  ></Input>
-                </Td>
-              );
-            })}
+            {Object.keys(state)
+              .slice(0, 3)
+              .map((key) => {
+                return (
+                  <Td key={key} p={"10px"}>
+                    <Input
+                      name={key}
+                      value={state[key]}
+                      onChange={handleChange}
+                      size={"sm"}
+                    ></Input>
+                  </Td>
+                );
+              })}
             <Td></Td>
           </Tr>
           {data.map((vehicle) => {
