@@ -1,7 +1,17 @@
 import vehicleStore from "@/stores/VehicleStore";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DeleteIcon,
+  EditIcon,
+} from "@chakra-ui/icons";
 import {
   Button,
+  ButtonGroup,
+  Flex,
+  IconButton,
   Input,
   Table,
   TableContainer,
@@ -22,12 +32,23 @@ export function VehicleList() {
     sortBy: "",
     orderBy: "",
   });
+  const [page, setPage] = useState({
+    limit: 5,
+    skip: 0,
+  });
+  const [size, setSize] = useState(-1);
+
+  useEffect(() => {
+    vehicleStore
+      .fetchVehicles({ ...state, ...page })
+      .then(() => setData(vehicleStore.vehicleData));
+  }, [state, page]);
 
   useEffect(() => {
     vehicleStore
       .fetchVehicles(state)
-      .then(() => setData(vehicleStore.vehicleData));
-  }, [state]);
+      .then(() => setSize(vehicleStore.vehicleData.length));
+  }, [state, size]);
 
   const handleChange = (event) => {
     setState({
@@ -41,6 +62,13 @@ export function VehicleList() {
       ...state,
       sortBy: event.target.textContent,
       orderBy: state.orderBy == "asc" ? "desc" : "asc",
+    });
+  };
+
+  const handlePageChange = (skip) => {
+    setPage({
+      ...page,
+      skip: skip,
     });
   };
 
@@ -98,6 +126,52 @@ export function VehicleList() {
           })}
         </Tbody>
       </Table>
+      <Flex justifyContent={"space-between"}>
+        <IconButton
+          colorScheme="teal"
+          icon={<ArrowLeftIcon />}
+          isDisabled={page.skip < page.limit}
+          onClick={() => handlePageChange(0)}
+        ></IconButton>
+        <IconButton
+          variant="outline"
+          colorScheme="teal"
+          icon={<ChevronLeftIcon />}
+          isDisabled={page.skip < page.limit}
+          onClick={() => handlePageChange(page.skip - page.limit)}
+        ></IconButton>
+        <ButtonGroup alignItems={"center"}>
+          {Array.from(Array(Math.ceil(size / page.limit)), (e, i) => {
+            return (
+              <Button
+                key={i}
+                variant="ghost"
+                colorScheme="teal"
+                size="sm"
+                isActive={i * page.limit == page.skip}
+                onClick={() => handlePageChange(i * page.limit)}
+              >
+                {i + 1}
+              </Button>
+            );
+          })}
+        </ButtonGroup>
+        <IconButton
+          variant="outline"
+          colorScheme="teal"
+          icon={<ChevronRightIcon />}
+          isDisabled={size <= page.limit + page.skip}
+          onClick={() => handlePageChange(page.skip + page.limit)}
+        ></IconButton>
+        <IconButton
+          colorScheme="teal"
+          icon={<ArrowRightIcon />}
+          isDisabled={size <= page.limit + page.skip}
+          onClick={() =>
+            handlePageChange(Math.floor(size / page.limit) * page.limit)
+          }
+        ></IconButton>
+      </Flex>
     </TableContainer>
   );
 }
