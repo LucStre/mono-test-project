@@ -1,12 +1,12 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Button, HStack, Heading } from "@chakra-ui/react";
 
-export function Header() {
+export function Header({ title, name }) {
   return (
     <HStack columnGap={"13rem"}>
-      <Heading>List of vehicles</Heading>
+      <Heading>{title}</Heading>
       <Button colorScheme="green" leftIcon={<AddIcon />}>
-        New vehicle
+        New {name}
       </Button>
     </HStack>
   );
