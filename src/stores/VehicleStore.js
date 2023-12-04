@@ -4,6 +4,8 @@ import { VehicleService } from "../services/VehicleService";
 class VehicleStore {
   vehicleService = new VehicleService();
   vehicleData = [];
+  status = "initial";
+  error = undefined;
 
   constructor() {
     makeObservable(this);
@@ -27,10 +29,30 @@ class VehicleStore {
         )
       );
       const urlParams = new URLSearchParams(Object.entries(filteredParams));
-      const data = await this.vehicleService.getVehicles(urlParams);
+      const data = await this.vehicleService.get(urlParams);
       runInAction(() => {
         this.vehicleData = data;
       });
+    } catch (error) {
+      runInAction(() => {
+        this.status = "error";
+      });
+    }
+  };
+
+  createVehicle = async (vehicle) => {
+    try {
+      const response = await this.vehicleService.create(vehicle);
+      if (response.status === 201) {
+        runInAction(() => {
+          this.status = "success";
+        });
+      } else {
+        return response.text().then((text) => {
+          this.status = "error";
+          this.error = text;
+        });
+      }
     } catch (error) {
       runInAction(() => {
         this.status = "error";

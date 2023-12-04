@@ -5,7 +5,11 @@ export class VehicleService extends BaseService {
     super("/vehicle");
   }
 
-  async getVehicles(urlParams) {
+  async get(urlParams) {
     return this.get(urlParams);
+  }
+
+  async create(vehicle) {
+    return this.post(vehicle);
   }
 }
