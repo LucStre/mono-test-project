@@ -21,6 +21,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { useEffect, useState } from "react";
 
 export function VehicleList() {
@@ -114,7 +115,13 @@ export function VehicleList() {
                 <Td>{vehicle.Name}</Td>
                 <Td>{vehicle.Abrv}</Td>
                 <Td>
-                  <Button mr={"5px"} colorScheme="blue" leftIcon={<EditIcon />}>
+                  <Button
+                    as={NextLink}
+                    href={`/vehicle/${vehicle.Id}`}
+                    mr={"5px"}
+                    colorScheme="blue"
+                    leftIcon={<EditIcon />}
+                  >
                     Edit
                   </Button>
                   <Button colorScheme="red" leftIcon={<DeleteIcon />}>

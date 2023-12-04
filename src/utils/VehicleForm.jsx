@@ -38,22 +38,46 @@ export const fields = [
   },
 ];
 
-const hooks = {
-  onInit(form) {
-    autorun(() => form.clearing);
-    autorun(() => form.validating);
-    autorun(() => form.submitting);
-  },
-  async onSuccess(form) {
-    await vehicleStore.createVehicle(form.values()).then(() => {
-      if (vehicleStore.status == "error") {
-        form.$("Id").invalidate(vehicleStore.error);
-      } else {
-        window.location.href = "/";
-      }
-    });
-  },
+const createForm = () => {
+  const hooks = {
+    onInit(form) {
+      autorun(() => form.clearing);
+      autorun(() => form.validating);
+      autorun(() => form.submitting);
+    },
+    async onSuccess(form) {
+      await vehicleStore.createVehicle(form.values()).then(() => {
+        if (vehicleStore.status == "error") {
+          form.$("Id").invalidate(vehicleStore.error);
+        } else {
+          window.location.href = "/";
+        }
+      });
+    },
+  };
+
+  return new MobxReactForm({ fields }, { plugins, hooks });
 };
 
-const vehicleForm = new MobxReactForm({ fields }, { plugins, hooks });
-export default vehicleForm;
+const editForm = () => {
+  const hooks = {
+    onInit(form) {
+      autorun(() => form.clearing);
+      autorun(() => form.validating);
+      autorun(() => form.submitting);
+    },
+    async onSuccess(form) {
+      await vehicleStore.updateVehicle(form.values()).then(() => {
+        if (vehicleStore.status == "error") {
+          form.$("Id").invalidate(vehicleStore.error);
+        } else {
+          window.location.href = "/";
+        }
+      });
+    },
+  };
+
+  return new MobxReactForm({ fields }, { plugins, hooks });
+};
+
+export { createForm, editForm };

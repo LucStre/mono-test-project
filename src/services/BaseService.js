@@ -38,7 +38,10 @@ export class BaseService {
       headers,
       body: JSON.stringify(data),
     };
-    const request = new Request(BASE_URL + this.endpoint + "/" + id, options);
+    const request = new Request(
+      BASE_URL + this.endpoint + "/" + data.Id,
+      options
+    );
     const response = await fetch(request);
     return response;
   };

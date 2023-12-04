@@ -59,6 +59,21 @@ class VehicleStore {
       });
     }
   };
+
+  updateVehicle = async (vehicle) => {
+    try {
+      const response = await this.vehicleService.put(vehicle);
+      if (response.status === 200) {
+        runInAction(() => {
+          this.status = "success";
+        });
+      }
+    } catch (error) {
+      runInAction(() => {
+        this.status = "error";
+      });
+    }
+  };
 }
 
 const vehicleStore = new VehicleStore();

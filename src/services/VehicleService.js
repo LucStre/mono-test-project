@@ -12,4 +12,8 @@ export class VehicleService extends BaseService {
   async create(vehicle) {
     return this.post(vehicle);
   }
+
+  async put(vehicle) {
+    return this.put(vehicle);
+  }
 }
