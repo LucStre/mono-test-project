@@ -8,6 +8,12 @@ import {
   EditIcon,
 } from "@chakra-ui/icons";
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
   ButtonGroup,
   Flex,
@@ -20,9 +26,10 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function VehicleList() {
   const [data, setData] = useState([]);
@@ -38,6 +45,9 @@ export function VehicleList() {
     skip: 0,
   });
   const [size, setSize] = useState(-1);
+  const [deleteId, setDeleteId] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
 
   useEffect(() => {
     vehicleStore
@@ -70,6 +80,15 @@ export function VehicleList() {
     setPage({
       ...page,
       skip: skip,
+    });
+  };
+
+  const handleDelete = () => {
+    vehicleStore.deleteVehicle(deleteId).then(() => {
+      setPage({
+        ...page,
+      });
+      onClose();
     });
   };
 
@@ -124,7 +143,14 @@ export function VehicleList() {
                   >
                     Edit
                   </Button>
-                  <Button colorScheme="red" leftIcon={<DeleteIcon />}>
+                  <Button
+                    colorScheme="red"
+                    leftIcon={<DeleteIcon />}
+                    onClick={() => {
+                      setDeleteId(vehicle.Id);
+                      onOpen();
+                    }}
+                  >
                     Delete
                   </Button>
                 </Td>
@@ -179,6 +205,32 @@ export function VehicleList() {
           }
         ></IconButton>
       </Flex>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Vehicle
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete vehicle with Id {deleteId}?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </TableContainer>
   );
 }

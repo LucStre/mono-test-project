@@ -74,6 +74,21 @@ class VehicleStore {
       });
     }
   };
+
+  deleteVehicle = async (id) => {
+    try {
+      const response = await this.vehicleService.delete(id);
+      if (response.status === 204) {
+        runInAction(() => {
+          this.status = "success";
+        });
+      }
+    } catch (error) {
+      runInAction(() => {
+        this.status = "error";
+      });
+    }
+  };
 }
 
 const vehicleStore = new VehicleStore();

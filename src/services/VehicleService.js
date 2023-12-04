@@ -16,4 +16,8 @@ export class VehicleService extends BaseService {
   async put(vehicle) {
     return this.put(vehicle);
   }
+
+  async delete(id) {
+    return this.delete(id);
+  }
 }
