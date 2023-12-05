@@ -74,6 +74,21 @@ class ModelStore {
       });
     }
   };
+
+  deleteModel = async (id) => {
+    try {
+      const response = await this.modelService.delete(id);
+      if (response.status === 204) {
+        runInAction(() => {
+          this.status = "success";
+        });
+      }
+    } catch (error) {
+      runInAction(() => {
+        this.status = "error";
+      });
+    }
+  };
 }
 
 const modelStore = new ModelStore();

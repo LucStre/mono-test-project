@@ -99,12 +99,21 @@ export const VehicleList = observer(({ modelsOf }) => {
   };
 
   const handleDelete = () => {
-    vehicleStore.deleteVehicle(deleteId).then(() => {
-      setPage({
-        ...page,
+    if (modelsOf) {
+      modelStore.deleteModel(deleteId).then(() => {
+        setPage({
+          ...page,
+        });
+        onClose();
       });
-      onClose();
-    });
+    } else {
+      vehicleStore.deleteVehicle(deleteId).then(() => {
+        setPage({
+          ...page,
+        });
+        onClose();
+      });
+    }
   };
 
   return (
@@ -169,22 +178,16 @@ export const VehicleList = observer(({ modelsOf }) => {
                   >
                     Edit
                   </Button>
-                  {modelsOf ? (
-                    <Button colorScheme="red" leftIcon={<DeleteIcon />}>
-                      Delete
-                    </Button>
-                  ) : (
-                    <Button
-                      colorScheme="red"
-                      leftIcon={<DeleteIcon />}
-                      onClick={() => {
-                        setDeleteId(vehicle.Id);
-                        onOpen();
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  )}
+                  <Button
+                    colorScheme="red"
+                    leftIcon={<DeleteIcon />}
+                    onClick={() => {
+                      setDeleteId(vehicle.Id);
+                      onOpen();
+                    }}
+                  >
+                    Delete
+                  </Button>
                 </Td>
               </Tr>
             );
@@ -249,7 +252,8 @@ export const VehicleList = observer(({ modelsOf }) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure you want to delete vehicle with Id {deleteId}?
+              Are you sure you want to delete {modelsOf ? "model" : "vehicle"}{" "}
+              with Id {deleteId}?
             </AlertDialogBody>
 
             <AlertDialogFooter>
