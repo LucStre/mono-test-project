@@ -22,7 +22,7 @@ export default function Edit() {
   return (
     <VStack mt={"70px"} spacing={"8"}>
       <Heading>Edit vehicle</Heading>
-      <Form name="Save changes" form={form}></Form>
+      <Form name="Save changes" data={null} form={form}></Form>
     </VStack>
   );
 }
