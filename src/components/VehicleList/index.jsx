@@ -156,25 +156,19 @@ export const VehicleList = observer(({ modelsOf }) => {
                 )}
                 <Td>{vehicle.Abrv}</Td>
                 <Td>
-                  {modelsOf ? (
-                    <Button
-                      colorScheme="blue"
-                      leftIcon={<EditIcon />}
-                      mr={"5px"}
-                    >
-                      Edit
-                    </Button>
-                  ) : (
-                    <Button
-                      as={NextLink}
-                      href={`/vehicle/${vehicle.Id}`}
-                      mr={"5px"}
-                      colorScheme="blue"
-                      leftIcon={<EditIcon />}
-                    >
-                      Edit
-                    </Button>
-                  )}
+                  <Button
+                    as={NextLink}
+                    href={
+                      modelsOf
+                        ? `/model/${vehicle.Id}`
+                        : `/vehicle/${vehicle.Id}`
+                    }
+                    mr={"5px"}
+                    colorScheme="blue"
+                    leftIcon={<EditIcon />}
+                  >
+                    Edit
+                  </Button>
                   {modelsOf ? (
                     <Button colorScheme="red" leftIcon={<DeleteIcon />}>
                       Delete

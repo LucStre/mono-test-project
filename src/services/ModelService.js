@@ -12,4 +12,8 @@ export class ModelService extends BaseService {
   async create(model) {
     return this.post(model);
   }
+
+  async update(model) {
+    return this.put(model);
+  }
 }
