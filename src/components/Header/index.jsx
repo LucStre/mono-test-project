@@ -1,19 +1,35 @@
-import { AddIcon } from "@chakra-ui/icons";
-import { Button, HStack, Heading } from "@chakra-ui/react";
+import { AddIcon, ArrowBackIcon } from "@chakra-ui/icons";
+import { Button, HStack, Heading, IconButton } from "@chakra-ui/react";
 import NextLink from "next/link";
 
-export function Header({ title, name }) {
+export function Header({ modelsOf, name }) {
   return (
     <HStack columnGap={"13rem"}>
-      <Heading>{title}</Heading>
-      <Button
-        as={NextLink}
-        href={`/${name}/create`}
-        colorScheme="green"
-        leftIcon={<AddIcon />}
-      >
-        New {name}
-      </Button>
+      {modelsOf && (
+        <IconButton
+          as={NextLink}
+          href={"/"}
+          colorScheme="teal"
+          icon={<ArrowBackIcon />}
+        ></IconButton>
+      )}
+      <Heading>
+        {"List of " + (modelsOf ? modelsOf.Name : "") + " " + name + "s"}
+      </Heading>
+      {modelsOf ? (
+        <Button colorScheme="green" leftIcon={<AddIcon />}>
+          New {name}
+        </Button>
+      ) : (
+        <Button
+          as={NextLink}
+          href={`/${name}/create`}
+          colorScheme="green"
+          leftIcon={<AddIcon />}
+        >
+          New {name}
+        </Button>
+      )}
     </HStack>
   );
 }

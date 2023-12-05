@@ -1,3 +1,4 @@
+import modelStore from "@/stores/ModelStore";
 import vehicleStore from "@/stores/VehicleStore";
 import {
   ArrowLeftIcon,
@@ -19,6 +20,7 @@ import {
   Flex,
   IconButton,
   Input,
+  Link,
   Table,
   TableContainer,
   Tbody,
@@ -28,10 +30,11 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
+import { observer } from "mobx-react";
 import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export function VehicleList() {
+export const VehicleList = observer(({ modelsOf }) => {
   const [data, setData] = useState([]);
   const [state, setState] = useState({
     Id: "",
@@ -50,16 +53,28 @@ export function VehicleList() {
   const cancelRef = useRef();
 
   useEffect(() => {
-    vehicleStore
-      .fetchVehicles({ ...state, ...page })
-      .then(() => setData(vehicleStore.vehicleData));
-  }, [state, page]);
+    if (modelsOf) {
+      modelStore
+        .fetchModels({ ...state, ...page, MakeId: modelsOf.Id })
+        .then(() => setData(modelStore.modelData));
+    } else {
+      vehicleStore
+        .fetchVehicles({ ...state, ...page })
+        .then(() => setData(vehicleStore.vehicleData));
+    }
+  }, [state, page, modelsOf]);
 
   useEffect(() => {
-    vehicleStore
-      .fetchVehicles(state)
-      .then(() => setSize(vehicleStore.vehicleData.length));
-  }, [state, size]);
+    if (modelsOf) {
+      modelStore
+        .fetchModels({ ...state, MakeId: modelsOf.Id })
+        .then(() => setSize(modelStore.modelData.length));
+    } else {
+      vehicleStore
+        .fetchVehicles(state)
+        .then(() => setSize(vehicleStore.vehicleData.length));
+    }
+  }, [state, size, modelsOf]);
 
   const handleChange = (event) => {
     setState({
@@ -121,6 +136,7 @@ export function VehicleList() {
                       value={state[key]}
                       onChange={handleChange}
                       size={"sm"}
+                      disabled={size == 0}
                     ></Input>
                   </Td>
                 );
@@ -131,28 +147,50 @@ export function VehicleList() {
             return (
               <Tr key={vehicle.Id}>
                 <Td>{vehicle.Id}</Td>
-                <Td>{vehicle.Name}</Td>
+                {modelsOf ? (
+                  <Td>{vehicle.Name}</Td>
+                ) : (
+                  <Td>
+                    <Link href={`/models/${vehicle.Id}`}>{vehicle.Name}</Link>
+                  </Td>
+                )}
                 <Td>{vehicle.Abrv}</Td>
                 <Td>
-                  <Button
-                    as={NextLink}
-                    href={`/vehicle/${vehicle.Id}`}
-                    mr={"5px"}
-                    colorScheme="blue"
-                    leftIcon={<EditIcon />}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    leftIcon={<DeleteIcon />}
-                    onClick={() => {
-                      setDeleteId(vehicle.Id);
-                      onOpen();
-                    }}
-                  >
-                    Delete
-                  </Button>
+                  {modelsOf ? (
+                    <Button
+                      colorScheme="blue"
+                      leftIcon={<EditIcon />}
+                      mr={"5px"}
+                    >
+                      Edit
+                    </Button>
+                  ) : (
+                    <Button
+                      as={NextLink}
+                      href={`/vehicle/${vehicle.Id}`}
+                      mr={"5px"}
+                      colorScheme="blue"
+                      leftIcon={<EditIcon />}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                  {modelsOf ? (
+                    <Button colorScheme="red" leftIcon={<DeleteIcon />}>
+                      Delete
+                    </Button>
+                  ) : (
+                    <Button
+                      colorScheme="red"
+                      leftIcon={<DeleteIcon />}
+                      onClick={() => {
+                        setDeleteId(vehicle.Id);
+                        onOpen();
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </Td>
               </Tr>
             );
@@ -233,4 +271,4 @@ export function VehicleList() {
       </AlertDialog>
     </TableContainer>
   );
-}
+});

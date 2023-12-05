@@ -5,8 +5,8 @@ import { VStack } from "@chakra-ui/react";
 export default function Home() {
   return (
     <VStack mt={"70px"}>
-      <Header title={"List of vehicles"} name={"vehicle"}></Header>
-      <VehicleList></VehicleList>
+      <Header modelsOf={null} name={"vehicle"}></Header>
+      <VehicleList modelsOf={null}></VehicleList>
     </VStack>
   );
 }
