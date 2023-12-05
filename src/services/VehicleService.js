@@ -13,7 +13,7 @@ export class VehicleService extends BaseService {
     return this.post(vehicle);
   }
 
-  async put(vehicle) {
+  async update(vehicle) {
     return this.put(vehicle);
   }
 

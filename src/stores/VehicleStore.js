@@ -62,7 +62,7 @@ class VehicleStore {
 
   updateVehicle = async (vehicle) => {
     try {
-      const response = await this.vehicleService.put(vehicle);
+      const response = await this.vehicleService.update(vehicle);
       if (response.status === 200) {
         runInAction(() => {
           this.status = "success";
