@@ -87,7 +87,7 @@ export const VehicleList = observer(({ modelsOf }) => {
     setState({
       ...state,
       sortBy: event.target.textContent,
-      orderBy: state.orderBy == "asc" ? "desc" : "asc",
+      orderBy: state.orderBy == "desc" ? "asc" : "desc",
     });
   };
 
