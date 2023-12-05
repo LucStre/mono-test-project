@@ -37,7 +37,7 @@ export const fields = [
     },
   },
   {
-    name: "VehicleId",
+    name: "MakeId",
     label: "Vehicle",
     placeholder: "Select vehicle of the model",
     rules: "required|integer",
@@ -59,7 +59,7 @@ const createForm = () => {
         if (modelStore.status == "error") {
           form.invalidate(modelStore.error);
         } else {
-          window.location.href = "/models/" + form.values().VehicleId;
+          window.location.href = "/models/" + form.values().MakeId;
         }
       });
     },

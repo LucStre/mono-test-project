@@ -31,9 +31,9 @@ export const Form = observer(({ name, data, form }) => {
         <FormErrorMessage>{form.$("Abrv").error}</FormErrorMessage>
       </FormControl>
       {data ? (
-        <FormControl isInvalid={form.$("VehicleId").error}>
-          <FormLabel>{form.$("VehicleId").label}</FormLabel>
-          <Select {...form.$("VehicleId").bind()}>
+        <FormControl isInvalid={form.$("MakeId").error}>
+          <FormLabel>{form.$("MakeId").label}</FormLabel>
+          <Select {...form.$("MakeId").bind()}>
             {data.map((vehicle) => {
               return (
                 <option key={vehicle.Id} value={vehicle.Id}>
@@ -42,7 +42,7 @@ export const Form = observer(({ name, data, form }) => {
               );
             })}
           </Select>
-          <FormErrorMessage>{form.$("VehicleId").error}</FormErrorMessage>
+          <FormErrorMessage>{form.$("MakeId").error}</FormErrorMessage>
           <Text color={"red"}>{form.error}</Text>
         </FormControl>
       ) : (
