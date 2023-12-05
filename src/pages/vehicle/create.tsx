@@ -7,7 +7,7 @@ export default function Create() {
   return (
     <VStack mt={"70px"} spacing={"8"}>
       <Heading>Create new vehicle</Heading>
-      <Form name="Create" form={form}></Form>
+      <Form name="Create" data={null} form={form}></Form>
     </VStack>
   );
 }

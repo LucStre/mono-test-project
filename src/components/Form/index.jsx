@@ -5,12 +5,14 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Select,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react";
 import NextLink from "next/link";
 
-export const Form = observer(({ name, form }) => {
+export const Form = observer(({ name, data, form }) => {
   return (
     <VStack>
       <FormControl isInvalid={form.$("Id").error}>
@@ -28,6 +30,24 @@ export const Form = observer(({ name, form }) => {
         <Input {...form.$("Abrv").bind()}></Input>
         <FormErrorMessage>{form.$("Abrv").error}</FormErrorMessage>
       </FormControl>
+      {data ? (
+        <FormControl isInvalid={form.$("VehicleId").error}>
+          <FormLabel>{form.$("VehicleId").label}</FormLabel>
+          <Select {...form.$("VehicleId").bind()}>
+            {data.map((vehicle) => {
+              return (
+                <option key={vehicle.Id} value={vehicle.Id}>
+                  {vehicle.Name}
+                </option>
+              );
+            })}
+          </Select>
+          <FormErrorMessage>{form.$("VehicleId").error}</FormErrorMessage>
+          <Text color={"red"}>{form.error}</Text>
+        </FormControl>
+      ) : (
+        <></>
+      )}
       <ButtonGroup
         mt={"20px"}
         p={"10px"}

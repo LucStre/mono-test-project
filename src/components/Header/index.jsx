@@ -16,20 +16,14 @@ export function Header({ modelsOf, name }) {
       <Heading>
         {"List of " + (modelsOf ? modelsOf.Name : "") + " " + name + "s"}
       </Heading>
-      {modelsOf ? (
-        <Button colorScheme="green" leftIcon={<AddIcon />}>
-          New {name}
-        </Button>
-      ) : (
-        <Button
-          as={NextLink}
-          href={`/${name}/create`}
-          colorScheme="green"
-          leftIcon={<AddIcon />}
-        >
-          New {name}
-        </Button>
-      )}
+      <Button
+        as={NextLink}
+        href={`/${name}/create`}
+        colorScheme="green"
+        leftIcon={<AddIcon />}
+      >
+        New {name}
+      </Button>
     </HStack>
   );
 }

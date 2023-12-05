@@ -39,6 +39,26 @@ class ModelStore {
       });
     }
   };
+
+  createModel = async (model) => {
+    try {
+      const response = await this.modelService.create(model);
+      if (response.status === 201) {
+        runInAction(() => {
+          this.status = "success";
+        });
+      } else {
+        return response.text().then((text) => {
+          this.status = "error";
+          this.error = text;
+        });
+      }
+    } catch (error) {
+      runInAction(() => {
+        this.status = "error";
+      });
+    }
+  };
 }
 
 const modelStore = new ModelStore();

@@ -8,4 +8,8 @@ export class ModelService extends BaseService {
   async get(urlParams) {
     return this.get(urlParams);
   }
+
+  async create(model) {
+    return this.post(model);
+  }
 }
