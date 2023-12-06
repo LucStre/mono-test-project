@@ -15,39 +15,34 @@ import NextLink from "next/link";
 export const Form = observer(({ name, data, form }) => {
   return (
     <VStack>
-      <FormControl isInvalid={form.$("Id").error}>
-        <FormLabel>{form.$("Id").label}</FormLabel>
-        <Input type="number" {...form.$("Id").bind()}></Input>
-        <FormErrorMessage>{form.$("Id").error}</FormErrorMessage>
-      </FormControl>
-      <FormControl isInvalid={form.$("Name").error}>
-        <FormLabel>{form.$("Name").label}</FormLabel>
-        <Input {...form.$("Name").bind()}></Input>
-        <FormErrorMessage>{form.$("Name").error}</FormErrorMessage>
-      </FormControl>
-      <FormControl isInvalid={form.$("Abrv").error}>
-        <FormLabel>{form.$("Abrv").label}</FormLabel>
-        <Input {...form.$("Abrv").bind()}></Input>
-        <FormErrorMessage>{form.$("Abrv").error}</FormErrorMessage>
-      </FormControl>
-      {data ? (
-        <FormControl isInvalid={form.$("MakeId").error}>
-          <FormLabel>{form.$("MakeId").label}</FormLabel>
-          <Select {...form.$("MakeId").bind()}>
-            {data.map((vehicle) => {
-              return (
-                <option key={vehicle.Id} value={vehicle.Id}>
-                  {vehicle.Name}
-                </option>
-              );
-            })}
-          </Select>
-          <FormErrorMessage>{form.$("MakeId").error}</FormErrorMessage>
-          <Text color={"red"}>{form.error}</Text>
-        </FormControl>
-      ) : (
-        <></>
-      )}
+      {form.map((field) => {
+        if (field.name != "MakeId") {
+          return (
+            <FormControl key={field.name} isInvalid={field.error}>
+              <FormLabel>{field.label}</FormLabel>
+              <Input {...field.bind()}></Input>
+              <FormErrorMessage>{field.error}</FormErrorMessage>
+            </FormControl>
+          );
+        } else {
+          return (
+            <FormControl key={field.name} isInvalid={field.error}>
+              <FormLabel>{field.label}</FormLabel>
+              <Select {...field.bind()}>
+                {data.map((vehicle) => {
+                  return (
+                    <option key={vehicle.Id} value={vehicle.Id}>
+                      {vehicle.Name}
+                    </option>
+                  );
+                })}
+              </Select>
+              <FormErrorMessage>{field.error}</FormErrorMessage>
+              <Text color={"red"}>{form.error}</Text>
+            </FormControl>
+          );
+        }
+      })}
       <ButtonGroup
         mt={"20px"}
         p={"10px"}
@@ -64,7 +59,11 @@ export const Form = observer(({ name, data, form }) => {
         <Button colorScheme="blue" onClick={form.onClear}>
           Clear
         </Button>
-        <Button as={NextLink} href="/" colorScheme="pink">
+        <Button
+          as={NextLink}
+          href={data ? `/models/${form.$("MakeId").value}` : "/"}
+          colorScheme="pink"
+        >
           Cancel
         </Button>
       </ButtonGroup>
