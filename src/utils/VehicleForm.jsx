@@ -59,7 +59,7 @@ const createForm = () => {
   return new MobxReactForm({ fields }, { plugins, hooks });
 };
 
-const editForm = () => {
+const editForm = (id) => {
   const hooks = {
     onInit(form) {
       autorun(() => form.clearing);
@@ -67,7 +67,7 @@ const editForm = () => {
       autorun(() => form.submitting);
     },
     async onSuccess(form) {
-      await vehicleStore.updateVehicle(form.values()).then(() => {
+      await vehicleStore.updateVehicle(id, form.values()).then(() => {
         if (vehicleStore.status == "error") {
           form.$("Id").invalidate(vehicleStore.error);
         } else {

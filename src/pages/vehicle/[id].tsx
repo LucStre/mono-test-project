@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 export default function Edit() {
   const params = useParams();
-  const form = editForm();
+  const form = editForm(params!.id);
   useEffect(() => {
     if (params) {
       vehicleStore.fetchVehicles({ Id: params!.id }).then(() => {

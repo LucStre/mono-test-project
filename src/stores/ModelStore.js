@@ -60,12 +60,17 @@ class ModelStore {
     }
   };
 
-  updateModel = async (model) => {
+  updateModel = async (id, model) => {
     try {
-      const response = await this.modelService.update(model);
+      const response = await this.modelService.update(id, model);
       if (response.status === 200) {
         runInAction(() => {
           this.status = "success";
+        });
+      } else {
+        return response.text().then((text) => {
+          this.status = "error";
+          this.error = text;
         });
       }
     } catch (error) {

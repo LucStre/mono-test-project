@@ -68,7 +68,7 @@ const createForm = () => {
   return new MobxReactForm({ fields }, { plugins, hooks });
 };
 
-const editForm = () => {
+const editForm = (id) => {
   const hooks = {
     onInit(form) {
       autorun(() => form.clearing);
@@ -76,7 +76,7 @@ const editForm = () => {
       autorun(() => form.submitting);
     },
     async onSuccess(form) {
-      await modelStore.updateModel(form.values()).then(() => {
+      await modelStore.updateModel(id, form.values()).then(() => {
         if (modelStore.status == "error") {
           form.invalidate(modelStore.error);
         } else {

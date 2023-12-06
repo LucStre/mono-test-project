@@ -30,7 +30,7 @@ export class BaseService {
     return response;
   };
 
-  put = async (data) => {
+  put = async (id, data) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     var options = {
@@ -38,10 +38,7 @@ export class BaseService {
       headers,
       body: JSON.stringify(data),
     };
-    const request = new Request(
-      BASE_URL + this.endpoint + "/" + data.Id,
-      options
-    );
+    const request = new Request(BASE_URL + this.endpoint + "/" + id, options);
     const response = await fetch(request);
     return response;
   };

@@ -13,8 +13,8 @@ export class ModelService extends BaseService {
     return this.post(model);
   }
 
-  async update(model) {
-    return this.put(model);
+  async update(id, model) {
+    return this.put(id, model);
   }
 
   async delete(id) {

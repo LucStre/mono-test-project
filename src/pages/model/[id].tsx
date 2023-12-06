@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function Edit() {
   const params = useParams();
-  const form = editForm();
+  const form = editForm(params!.id);
   const [data, setData] = useState<any[]>([]);
   useEffect(() => {
     vehicleStore

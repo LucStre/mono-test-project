@@ -60,12 +60,17 @@ class VehicleStore {
     }
   };
 
-  updateVehicle = async (vehicle) => {
+  updateVehicle = async (id, vehicle) => {
     try {
-      const response = await this.vehicleService.update(vehicle);
+      const response = await this.vehicleService.update(id, vehicle);
       if (response.status === 200) {
         runInAction(() => {
           this.status = "success";
+        });
+      } else {
+        return response.text().then((text) => {
+          this.status = "error";
+          this.error = text;
         });
       }
     } catch (error) {
