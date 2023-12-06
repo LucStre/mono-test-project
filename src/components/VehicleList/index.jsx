@@ -145,7 +145,6 @@ export const VehicleList = observer(({ modelsOf }) => {
                       value={state[key]}
                       onChange={handleChange}
                       size={"sm"}
-                      disabled={size == 0}
                     ></Input>
                   </Td>
                 );
